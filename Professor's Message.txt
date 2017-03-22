@@ -1,0 +1,17 @@
+Professors Message:
+
+I have looked online and quite surprisingly have not found a CUDA implementation of the "paths of length N" problem on a graph. It seems that for reasonably sized graphs once N becomes above 15 the runtime becomes impractical. It thus sounds like a good problem to pursue in terms of computational intensity.
+
+Some feedback: 1. I assume you will store the graph as an adjacency matrix; i.e. if your graph has N nodes you have an NxN matrix where (i, j) is 1 if there is an edge from i to j, and 0 otherwise. That is the best way I think given that CUDA arrays are more easily exchanged with the CPU compared to linked lists.
+
+You should definitely store that adjacency matrix in what is called constant memory (see the CUDA Programmer's Guide, the link is in the final project description). That memory is read-only and not that big but is a cache, and will run much faster given that your graph will be constant.
+
+I understand you are going to use a "brute force" approach. I assume that means if N were equal to 4, you would first keep track of all paths of length 2, then from those retrieve all paths of length 3, then from those retrieve all paths of length 4. If this is so:
+
+To me the parallelism would be applied once for every N. In parallel compute all paths of length 2. Then in parallel, compute all paths of length 3, and so on.
+You will want to think carefully about how to store the paths as they are computed. I recommend shared memory (again, check the CUDA Programmer's Guide). That is a read-write cache that is larger and slower than constant memory but faster than global memory (what we have used so far).
+When you present results, make sure you try different network sizes and different values of N. It would be very interesting to see how large of a value CUDA can accomodate in terms of both. Also if you can find a working CPU version, ideally in C, you can do a comparison.
+
+I recommend over these next couple of days, to try to get a basic CUDA file setup with an adjacency matrix and a simple operation (maybe computing all pairs). Also get comfortable with Linux. Let me know as questions come up, I very much look forward to the results of this project.
+
+For the Documentation: Try to describe the idea, not to much on the code.

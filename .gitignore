@@ -1,0 +1,10 @@
+# Default files to ignore in CUDA
+*.i
+*.ii
+*.gpu
+*.ptx
+*.cubin
+*.fatbin
+
+# Other Files to ingnore in CUDA
+make
